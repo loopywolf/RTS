@@ -1,0 +1,36 @@
+Developer Notes: Game#2 - AddyPokemon
+
+MILESTONES
+
+Step 1. Goal: Little man moves on map, can shoot enemies, but real assets (done?)
+	(v)little man 
+	(v)tilemap 
+	(v)enemy real assets
+	(v)little man moves with WASD
+	(v)enemy exists
+	(v)enemy takes damage from shots
+	(v)enemy dies with enough damage
+	(v)shoot at mouse cursor
+	(v)your guy takes damage when he touches monsters
+
+Step 2. Goal: man can gather items and place items
+	(v)pick up items
+	(x)click on tile fires a gathering projectile - I am able to identify which tile but only sometimes and only by number
+		I can get name of tile, but it takes a bit of work and needs cleaned up
+	(v)clicking on a tile near the player gathers it
+	(x)gathering project turns a tile into an item
+
+Step 3. Inventory (was also and placing items/tiles)
+	(v)inventory (was also building mode) GUI
+	(v)when inventory is active,..
+		(v)displays inventory
+		(>)can select an item
+		(>)clicking on the map places tile within BUILD_DISTANCE
+	(v)clicking (I) activates inventory
+	(v)gathering a tile adds in inventory
+	TODO: move camera to center better when GUI is in place
+	TODO: breaking a block produces a bunch of items
+
+Step 4. Placing items/tiles
+	can select an item
+	clicking on the map places tile within BUILD_DISTANCE
