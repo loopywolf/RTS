@@ -7,7 +7,7 @@ public class UnitRTS : MonoBehaviour {
     private GameObject selectedGameObject;
     private IMovePosition movePosition;
     //AP
-    public bool selected { get; internal set; } //Hi .. I'm just testing Git
+    public bool selected { get; internal set; } //Hi .. I'm just testing Git - Git why you so mean to me?
 
     private void Awake() {
         selectedGameObject = transform.Find("selection-box").gameObject;
