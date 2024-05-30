@@ -70,10 +70,24 @@ public class DragSelection : MonoBehaviour
             Vector3 movePosition = UtilsClass.GetMouseWorldPosition();  //swell =( 12:21
             Debug.Log("Moveposition=" + movePosition);
 
+            /* List<Vector3> targetPositionList = new List<Vector3> {
+                movePosition + new Vector3(0,0),
+                movePosition + new Vector3(0,2),
+                movePosition + new Vector3(0,4),
+                movePosition + new Vector3(0,6)
+            }; */
+
+            //List<Vector3> targetPositionList = GetPositionListAround(movePosition, 1f, 5); //previous
+            List<Vector3> targetPositionList = GetPositionListAround(movePosition, new float[] { 1f, 2f, 3f }, new int[] { 5, 10, 20 });
+
+            int targetPositionIndex = 0;
+
             for(int i=0; i<selectedUnitRTSList.Count; i++)
             {
                 UnitRTS urts = selectedUnitRTSList[i];
-                urts.MoveTo(movePosition);
+                //urts.MoveTo(movePosition);
+                urts.MoveTo(targetPositionList[targetPositionIndex]);
+                targetPositionIndex = (targetPositionIndex + 1) % targetPositionList.Count;
             }
         }//RMB
     }//Update
@@ -134,5 +148,32 @@ public class DragSelection : MonoBehaviour
             }//if
         }//for
     }//F
+
+    private List<Vector3> GetPositionListAround(Vector3 startPosition, float[] ringDistanceArray, int[] ringPositionCountArray) {
+        List<Vector3> positionList = new List<Vector3>();
+        positionList.Add(startPosition);
+        for(int i=0; i<ringDistanceArray.Length; i++) {
+            positionList.AddRange(GetPositionListAround(startPosition, ringDistanceArray[i], ringPositionCountArray[i])); //oh I see, first ring 5, next ring 10
+        }
+        return positionList;
+    }//F
+
+    private List<Vector3> GetPositionListAround(Vector3 startPosition, float distance, int positionCount)
+    {
+        List<Vector3> positionList = new List<Vector3>();
+        for(int i = 0; i<positionCount; i++)
+        {
+            float angle = i * (360f / positionCount);
+            Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
+            Vector3 position = startPosition + dir * distance;
+            positionList.Add(position);
+        }
+        return positionList;
+    }
+
+    private Vector3 ApplyRotationToVector(Vector3 vec, float angle)
+    {
+        return Quaternion.Euler(0, 0, angle) * vec;
+    }
 
 }//class
