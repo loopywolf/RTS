@@ -70,10 +70,23 @@ public class DragSelection : MonoBehaviour
             Vector3 movePosition = UtilsClass.GetMouseWorldPosition();  //swell =( 12:21
             Debug.Log("Moveposition=" + movePosition);
 
-            for(int i=0; i<selectedUnitRTSList.Count; i++)
+            //move in formation
+            /* List<Vector3> targetPositionList = new List<Vector3> {
+                movePosition + new Vector3(0,0),
+                movePosition + new Vector3(1f,0),
+                movePosition + new Vector3(2f,0),
+                movePosition + new Vector3(3f,0)
+            }; */
+            List<Vector3> targetPositionList = GetPositionListAround(movePosition, 2f, 5);
+
+            int targetPositionIndex = 0;
+
+            for (int i=0; i<selectedUnitRTSList.Count; i++)
             {
                 UnitRTS urts = selectedUnitRTSList[i];
-                urts.MoveTo(movePosition);
+                //urts.MoveTo(movePosition);
+                urts.MoveTo(targetPositionList[targetPositionIndex]);
+                targetPositionIndex = (targetPositionIndex + 1) % targetPositionList.Count;
             }
         }//RMB
     }//Update
@@ -134,5 +147,20 @@ public class DragSelection : MonoBehaviour
             }//if
         }//for
     }//F
+
+    private List<Vector3> GetPositionListAround(Vector3 startPosition,float distance,int positionCount) {
+        List<Vector3> positionList = new List<Vector3>();
+        for(int i=0; i<positionCount; i++) {
+            float angle = i * (360f / positionCount);
+            Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
+            Vector3 position = startPosition + dir * distance;
+            positionList.Add(position);
+        }
+        return positionList;
+    }
+
+    private Vector3 ApplyRotationToVector(Vector3 vec, float angle) {
+        return Quaternion.Euler(0, 0, angle) * vec;
+    }
 
 }//class
