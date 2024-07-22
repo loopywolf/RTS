@@ -77,7 +77,8 @@ public class DragSelection : MonoBehaviour
                 movePosition + new Vector3(2f,0),
                 movePosition + new Vector3(3f,0)
             }; */
-            List<Vector3> targetPositionList = GetPositionListAround(movePosition, 2f, 5);
+            //List<Vector3> targetPositionList = GetPositionListAround(movePosition, 1f, 3);
+            List<Vector3> targetPositionList = GetPositionListAround(movePosition, new float[] { 1f, 2f, 3f }, new int[] { 5, 10, 20  });
 
             int targetPositionIndex = 0;
 
@@ -155,6 +156,15 @@ public class DragSelection : MonoBehaviour
             Vector3 dir = ApplyRotationToVector(new Vector3(1, 0), angle);
             Vector3 position = startPosition + dir * distance;
             positionList.Add(position);
+        }
+        return positionList;
+    }
+
+    private List<Vector3> GetPositionListAround(Vector3 startPosition, float[] ringDistanceArray, int[] ringPositionCountArray) {
+        List<Vector3> positionList = new List<Vector3>();
+        positionList.Add(startPosition);
+        for(int i=0;i<ringDistanceArray.Length; i++) {
+            positionList.AddRange(GetPositionListAround(startPosition, ringDistanceArray[i], ringPositionCountArray[i]));   
         }
         return positionList;
     }
