@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && false) //was temporarily disabled to try raycast clicking - and to select units
+        if (Input.GetButtonDown("Fire1")) //was temporarily disabled to try raycast clicking - and to select units
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2d = new Vector2(mousePos.x, mousePos.y);
