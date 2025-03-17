@@ -21,14 +21,14 @@ public class DragSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
+        //if(Input.GetMouseButtonDown(0)) // try to change this for keypad 1 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
             mousePositionInitial = Input.mousePosition;
             isDragSelect = false;
         }//if
 
-        if(Input.GetMouseButton(0))
-        {
+        //if(Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.Alpha1)) {
             if(!isDragSelect && (mousePositionInitial - Input.mousePosition).magnitude > 30)
             {
                 isDragSelect = true;
@@ -41,8 +41,8 @@ public class DragSelection : MonoBehaviour
             }//if
         }//LMB 1
 
-        if(Input.GetMouseButtonUp(0))
-        {
+        //if(Input.GetMouseButtonUp(0))
+        if (Input.GetKeyUp(KeyCode.Alpha1)) {
             if (isDragSelect)
             {
                 isDragSelect = false;
