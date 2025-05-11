@@ -20,6 +20,8 @@ public class CameraController : MonoBehaviour
     //Unit Selection;
     private Vector3 SelectStartPos;
     private Vector3 SelectEndPos;
+    //eKey
+    CraftingUI craftingUi;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,7 @@ public class CameraController : MonoBehaviour
         currentPlayer = GameObject.Find("Player");  //this will be switchable, but for now is OK
         destructibleGrid = DestructibleTileLayer.GetComponent<Grid>();
         myInventory = GetComponent<InventoryAP>();
+        craftingUi = GetComponent<CraftingUI>();
     }//Start
 
     // Update is called once per frame
@@ -112,4 +115,5 @@ public class CameraController : MonoBehaviour
         internal static Vector3 topLeft;
         internal static Vector3 bottomRight;
     }//class
+
 }//class
