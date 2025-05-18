@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
                 {
                     //did we click a tile? if so, gather that tile
                     Debug.Log("LMB clicked tile " + hit.collider.gameObject.name + " at " + mousePos2d);
-                    //if the tile is close by, gather it
+                    //if the tile is close by, gather it 
                     float d = Vector2.Distance(mousePos2d, player.transform.position);
                     if(d <= GATHER_DISTANCE)
                     {

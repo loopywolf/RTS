@@ -116,4 +116,10 @@ public class CameraController : MonoBehaviour
         internal static Vector3 bottomRight;
     }//class
 
+    internal GameObject getDropMaterial(int index) {
+        //throw new NotImplementedException();
+        Debug.Log("dropping material "+index);
+        return myInventory.getDropMaterial(index);
+    }//F
+
 }//class

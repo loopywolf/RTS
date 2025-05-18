@@ -12,12 +12,14 @@ public class InventoryAP : MonoBehaviour
     public GameObject inventorySlotsParent;
     private static bool uiShowing = false;
     public GameObject inventoryUiPanel;
+    public List<GameObject> Materials;
 
     //TODO once it works, removes the dummy entry
 
     private void Awake()
     {
         inventorySlot = new List<ItemAP>(); //Item[INVENTORY_SIZE];        
+        //Materials = new List<GameObject>(); 
     }//F
     
     internal void add(GameObject go)
@@ -102,6 +104,15 @@ public class InventoryAP : MonoBehaviour
         //throw new NotImplementedException();
         uiShowing = !uiShowing;
         inventoryUiPanel.SetActive(uiShowing);
+    }//F
+
+    internal GameObject getDropMaterial(int index) {
+        //throw new NotImplementedException();
+        Debug.Log("Materials in memory " + Materials.Count);
+        if (index < Materials.Count)
+            return Materials[index];
+        else
+            return null;
     }//F
 
 }//class
