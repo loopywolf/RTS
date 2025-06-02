@@ -6,6 +6,7 @@ using UnityEngine;
 public class CraftingUI : MonoBehaviour
 {
     public GameObject eKeyPanel;
+    public GameObject craftingPanel;
     private bool eKeyDisplaying = false;
 
     // Start is called before the first frame update
@@ -17,6 +18,7 @@ public class CraftingUI : MonoBehaviour
     void Update()
     {
         eKeyPanel.gameObject.SetActive(eKeyDisplaying);
+        craftingPanel.gameObject.SetActive(eKeyDisplaying);
     }//Update
 
     internal void displayEkey(bool displayOrNot) {
