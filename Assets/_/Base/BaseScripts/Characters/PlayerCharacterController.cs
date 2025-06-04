@@ -200,7 +200,7 @@ public class PlayerCharacterController : MonoBehaviour {
     }
 
     private bool TestInputDownHookshot() {
-        return Input.GetKeyDown(KeyCode.E);
+        return Input.GetKeyDown(KeyCode.H);
     }
 
     private bool TestInputJump() {

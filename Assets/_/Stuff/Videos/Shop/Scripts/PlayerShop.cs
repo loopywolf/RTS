@@ -124,7 +124,7 @@ public class PlayerShop : MonoBehaviour, Enemy.IEnemyTargetable, IShopCustomer {
     #endregion
     
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.P)) {
             TryConsumeHealthPotion();
         }
     }

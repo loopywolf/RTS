@@ -50,6 +50,11 @@ public class CameraController : MonoBehaviour
             GetComponent<InventoryAP>().switchInventoryOnOff();
         }//if
 
+        if(Input.GetKeyUp( KeyCode.E)) 
+        {
+            GetComponent<CraftingUI>().craftingOnOff();
+        }//if
+
         //raycast clicking test
         if( Input.GetMouseButtonDown(1) ) {  //I think that's RMB / yes - OOh I have RMB
             
