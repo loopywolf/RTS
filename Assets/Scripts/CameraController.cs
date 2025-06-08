@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour
         //Camera.main.GetComponent<InventoryAP>().add(i);
     }//F */
 
-    public void addToInventory(GameObject go)
+    public void addToInventory(GameObject go) //?
     {
         //adds the item to the inventory
         //1. add item to inventory
