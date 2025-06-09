@@ -13,6 +13,10 @@ public class InventoryAP : MonoBehaviour
     private static bool uiShowing = false;
     public GameObject inventoryUiPanel;
     public List<GameObject> Materials;
+    //private Hashtable materialsInventory;
+    private Dictionary<int, int> materialsInventory;
+    public GameObject addMaterialsHere;
+    public GameObject newMatSlot;   //link to the prefab
 
     //TODO once it works, removes the dummy entry
 
@@ -20,9 +24,11 @@ public class InventoryAP : MonoBehaviour
     {
         inventorySlot = new List<ItemAP>(); //Item[INVENTORY_SIZE];        
         //Materials = new List<GameObject>(); 
-    }//F
-    
-    internal void add(GameObject go)
+        //materialsInventory = new Hashtable();
+        materialsInventory = new Dictionary<int, int>();
+}//F
+
+internal void add(GameObject go)
     {
             //1. add item to internal data (inventory) 
             /*Item i = go.GetComponent<Item>();
@@ -113,6 +119,31 @@ public class InventoryAP : MonoBehaviour
             return Materials[index];
         else
             return null;
+    }//F
+
+    internal void addMat(int material) {
+        //throw new NotImplementedException();
+
+        //Add this mat to your inventory display
+        //first, we need a key-value pair for inventory
+        if(materialsInventory.ContainsKey(material)) {
+            materialsInventory[material]++;
+            //update materials?
+        } else {
+            materialsInventory[material] = 1;  //amount has to be set to 1
+            GameObject go = Instantiate( newMatSlot, addMaterialsHere.transform);
+            //image child has to equal the material KEY from Camera
+            if (Materials.Count > material) {
+                Image mImage = go.GetComponent<Image>();
+                if (mImage != null) {
+                    Sprite s = Materials[material].GetComponent<SpriteRenderer>().sprite; //if it exists, it has this
+                    mImage.sprite = s;
+                }//if
+            }//if
+        }//if
+
+        //now update the amounts?
+        Debug.Log("added mat=" + material + " now there are " + materialsInventory[material]);
     }//F
 
 }//class
