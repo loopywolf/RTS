@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 919769000160700734}
   - component: {fileID: 126408748881841208}
   m_Layer: 0
-  m_Name: Silicate-mat (1)
+  m_Name: mat-raremetal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1732927893
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1177073380, guid: 51f2b542a5ee3144391692abd525cb62, type: 3}
+  m_Sprite: {fileID: -1569163339, guid: 51f2b542a5ee3144391692abd525cb62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,7 +123,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.92777777, y: 0.6888889}
+    oldSize: {x: 0.78333336, y: 0.6}
     newSize: {x: 1.31, y: 0.98}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

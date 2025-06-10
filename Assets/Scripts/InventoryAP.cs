@@ -8,15 +8,15 @@ public class InventoryAP : MonoBehaviour
 {
     List<ItemAP> inventorySlot;
     private const int INVENTORY_SIZE = 12;
-    public GameObject inventorySlotPrefab;
-    public GameObject inventorySlotsParent;
+    public GameObject inventorySlotPrefab; //deprecated but still functional
+    public GameObject inventorySlotsParent; //deprecated but still functional
     private static bool uiShowing = false;
     public GameObject inventoryUiPanel;
-    public List<GameObject> Materials;
+    public List<GameObject> MaterialSprites; //no, let's leave it here and leave the functions there
     //private Hashtable materialsInventory;
-    private Dictionary<int, int> materialsInventory;
-    public GameObject addMaterialsHere;
-    public GameObject newMatSlot;   //link to the prefab
+    //private Dictionary<int, int> materialsInventory;
+    public GameObject uiMaterialsPanel; //panel
+    public GameObject uiMatSlotPrefab;   //link to the prefab
 
     //TODO once it works, removes the dummy entry
 
@@ -25,7 +25,7 @@ public class InventoryAP : MonoBehaviour
         inventorySlot = new List<ItemAP>(); //Item[INVENTORY_SIZE];        
         //Materials = new List<GameObject>(); 
         //materialsInventory = new Hashtable();
-        materialsInventory = new Dictionary<int, int>();
+        //materialsInventory = new Dictionary<int, int>(); - we use the graphics instead
 }//F
 
 internal void add(GameObject go)
@@ -114,9 +114,9 @@ internal void add(GameObject go)
 
     internal GameObject getDropMaterial(int index) {
         //throw new NotImplementedException();
-        Debug.Log("Materials in memory " + Materials.Count);
-        if (index < Materials.Count)
-            return Materials[index];
+        Debug.Log("Materials in memory " + MaterialSprites.Count);
+        if (index < MaterialSprites.Count)
+            return MaterialSprites[index];
         else
             return null;
     }//F
@@ -125,25 +125,39 @@ internal void add(GameObject go)
         //throw new NotImplementedException();
 
         //Add this mat to your inventory display
-        //first, we need a key-value pair for inventory
-        if(materialsInventory.ContainsKey(material)) {
-            materialsInventory[material]++;
-            //update materials?
-        } else {
-            materialsInventory[material] = 1;  //amount has to be set to 1
-            GameObject go = Instantiate( newMatSlot, addMaterialsHere.transform);
-            //image child has to equal the material KEY from Camera
-            if (Materials.Count > material) {
-                Image mImage = go.GetComponent<Image>();
-                if (mImage != null) {
-                    Sprite s = Materials[material].GetComponent<SpriteRenderer>().sprite; //if it exists, it has this
-                    mImage.sprite = s;
-                }//if
-            }//if
+        //first, we need a key-value pair for inventory..done
+
+        //1. If we already have some of this material, increment it
+        //1a.  Find this material in our inventory
+
+        MaterialSlot ms = getMaterialSlot(material);
+        if(ms==null) { //so make a new one
+            //materialsInventory[material] = 1;  //amount has to be set to 1 - it is set by default
+            GameObject go = Instantiate(uiMatSlotPrefab, uiMaterialsPanel.transform);
+            ms = go.GetComponent<MaterialSlot>();
+            ms.setMaterialIndex(material);
+            ms.setAmount(1);    //could be by default - the prefab starts at 1
+            Sprite s = MaterialSprites[material].GetComponent<SpriteRenderer>().sprite;
+            go.GetComponent<Image>().sprite = s;
+        } else { //it found the slot
+            //if(materialsInventory.ContainsKey(material)) {
+            ms.increment();
         }//if
 
-        //now update the amounts?
-        Debug.Log("added mat=" + material + " now there are " + materialsInventory[material]);
+        Debug.Log("added mat=" + material);
     }//F
 
+    private MaterialSlot getMaterialSlot(int material) {
+        //throw new NotImplementedException();
+
+        //searches all existing MaterialSlots for one with this material as its materialIndex
+        foreach (Transform child in uiMaterialsPanel.transform) {
+            // Do something with the child
+            MaterialSlot ms = child.GetComponent<MaterialSlot>();
+            if (ms.materialIndex == material)
+                return ms;
+        }//for
+        
+        return null;
+    }//F
 }//class
