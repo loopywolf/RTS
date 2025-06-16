@@ -11,11 +11,12 @@ public class Collectible : MonoBehaviour
     {
         //Do something to gain this object
         PlayerController pc = other.gameObject.GetComponent<PlayerController>();
+
         if (pc != null)
         {
             pc.addItem(this.name); //old inventory code
-            if(this.material>=0)
-                Camera.main.GetComponent<InventoryAP>().addMat(this.material);
+            //if(this.material>=0)
+            Camera.main.GetComponent<InventoryAP>().addMat(this.gameObject); //this needs fixed //this is where this belongs
             Destroy(gameObject);
         }//if
         //Debug.Log("Object that touched box " + other);//Excellent

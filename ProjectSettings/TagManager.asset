@@ -6,6 +6,7 @@ TagManager:
   tags:
   - selectable
   - mat
+  - craftable
   layers:
   - Default
   - TransparentFX

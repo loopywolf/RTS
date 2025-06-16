@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class InventoryAP : MonoBehaviour
@@ -121,7 +123,7 @@ internal void add(GameObject go)
             return null;
     }//F
 
-    internal void addMat(int material) {
+    internal void addMat(GameObject healthCollectible) {
         //throw new NotImplementedException();
 
         //Add this mat to your inventory display
@@ -130,32 +132,38 @@ internal void add(GameObject go)
         //1. If we already have some of this material, increment it
         //1a.  Find this material in our inventory
 
-        MaterialSlot ms = getMaterialSlot(material);
-        if(ms==null) { //so make a new one
+        GameObject hc = healthCollectible;
+
+        MaterialSlot ms = getMaterialSlot( hc );
+        if(ms==null) { //so make a new one             
             //materialsInventory[material] = 1;  //amount has to be set to 1 - it is set by default
-            GameObject go = Instantiate(uiMatSlotPrefab, uiMaterialsPanel.transform);
-            ms = go.GetComponent<MaterialSlot>();
-            ms.setMaterialIndex(material);
-            ms.setAmount(1);    //could be by default - the prefab starts at 1
-            Sprite s = MaterialSprites[material].GetComponent<SpriteRenderer>().sprite;
-            go.GetComponent<Image>().sprite = s;
+            GameObject go = Instantiate(uiMatSlotPrefab, uiMaterialsPanel.transform);   //adds the material slot prefab
+            //set sprite
+            Sprite s = hc.GetComponent<SpriteRenderer>().sprite;
+            Assert.IsNotNull(s);    //should never be null
+            Assert.IsNotNull(go);   //should never be null;
+            go.GetComponent<Image>().sprite = s;    //should be safe
+            //amount has been set automatically to 1 for a new instantiation
         } else { //it found the slot
             //if(materialsInventory.ContainsKey(material)) {
             ms.increment();
         }//if
 
-        Debug.Log("added mat=" + material);
+        Debug.Log("added mat=" + hc.name);
     }//F
 
-    private MaterialSlot getMaterialSlot(int material) {
+    private MaterialSlot getMaterialSlot(GameObject healthCollectible) {    //identify the slot in the ui that houses this material
         //throw new NotImplementedException();
 
         //searches all existing MaterialSlots for one with this material as its materialIndex
         foreach (Transform child in uiMaterialsPanel.transform) {
             // Do something with the child
-            MaterialSlot ms = child.GetComponent<MaterialSlot>();
-            if (ms.materialIndex == material)
-                return ms;
+            Image i = child.GetComponent<Image>();
+            Assert.IsNotNull(i);    //should never be null
+            Sprite hcs = healthCollectible.GetComponent<SpriteRenderer>().sprite;
+            Assert.IsNotNull(hcs); //should never be null
+            if (i.sprite == hcs)
+                return child.GetComponent<MaterialSlot>();
         }//for
         
         return null;
