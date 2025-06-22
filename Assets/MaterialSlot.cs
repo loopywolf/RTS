@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class MaterialSlot : MonoBehaviour
 {
@@ -41,10 +42,8 @@ public class MaterialSlot : MonoBehaviour
 
         //get a refrence to the textmeshpro component
         TextMeshProUGUI textComponent = transform.GetComponentInChildren<TextMeshProUGUI>();
-        if (textComponent != null)
-            textComponent.text = this.amount.ToString();
-        else
-            Debug.Log("blah!");
+        Assert.IsNotNull(textComponent); //should never be null
+        textComponent.text = this.amount.ToString();
     }
 
 }//F

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 public class CraftingUI : MonoBehaviour
 {
@@ -13,11 +15,17 @@ public class CraftingUI : MonoBehaviour
     private bool eCraftingDisplaying = false;
     public static int MAX_CRAFTING_RANGE = 7;
     public List<GameObject> CraftableBlocks;
+    public GameObject craftSlotPrefab;
+    public Transform craftingDesignsPanel;
 
     // Start is called before the first frame update
     void Start()
     {
         //you must build the crafting table from the elements;
+        //UpdateCraftingDisplay();    //is done at start and then each time you pick something up
+        craftingDesignsPanel = craftingPanel.transform.GetChild(0);
+        Assert.IsNotNull(craftingDesignsPanel);
+        SetupCraftingDisplay();
     }//Start
 
     // Update is called once per frame
@@ -26,6 +34,8 @@ public class CraftingUI : MonoBehaviour
         eKeyPanel.gameObject.SetActive(eKeyDisplaying);
         craftingPanel.gameObject.SetActive(eCraftingDisplaying);
         inventoryPanel.gameObject.SetActive(eInventoryDisplaying);
+        //for debugging
+        //SetupCraftingDisplay();
     }//Update
 
     internal void displayEkey(bool displayOrNot) {
@@ -34,7 +44,7 @@ public class CraftingUI : MonoBehaviour
 
     internal void craftingOnOff() {
         //throw new NotImplementedException();
-        if(eKeyDisplaying)
+        //if(eKeyDisplaying)
             eCraftingDisplaying = !eCraftingDisplaying;
         eInventoryDisplaying = !eInventoryDisplaying;
         Debug.Log("Crafting On");
@@ -50,4 +60,47 @@ public class CraftingUI : MonoBehaviour
         //if (hasMats(Material.Silicate, 1)) Instantiate(WallPrefab, craftingPanel.transform, Quaternion.identity);
     }
 
-}//class
+    private void UpdateCraftingDisplay() {
+        //throw new NotImplementedException();
+        //1. for each craftable. add a tile to the CraftingPanel
+    }
+
+    private void SetupCraftingDisplay() {
+        //throw new NotImplementedException();
+        //Done once - finds all the craftable elements in the game and adds them to the panel
+
+        //GameObject[] AllCraftables = GameObject.FindGameObjectsWithTag("craftable"); //these will be prefab tiles that can be placed
+
+        /*GameObject[] Craftables = Resources.FindObjectsOfTypeAll<GameObject>()
+            .Where(go => go.CompareTag("craftables") &&
+            PrefabUtility.IsPartOfPrefabAsset(go))
+            .ToArray();*/
+
+        //Get all objects in the Prefabs folder
+        GameObject[] allPrefabs = Resources.LoadAll<GameObject>("craftables");
+
+        // Filter by tag
+        List<GameObject> AllCraftables = new List<GameObject>();
+        foreach (GameObject prefab in allPrefabs) {
+            if (prefab.CompareTag("craftable")) {
+                AllCraftables.Add(prefab);
+            }
+        }
+        Assert.IsNotNull(AllCraftables); //this cannot happen
+        Assert.AreNotEqual(AllCraftables.Count, 0);
+
+        craftingDesignsPanel.DetachChildren();
+
+        for(int i=0;i<AllCraftables.Count;i++) {
+            GameObject craftSlot = Instantiate(craftSlotPrefab, craftingDesignsPanel);
+            if (craftSlot != null) {
+                Image iconImage = craftSlot.GetComponent<Image>();
+                if (iconImage != null) {
+                    iconImage.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite;
+                }// if not null
+            }//if not null
+
+        }//for
+
+    }//class
+}
