@@ -102,5 +102,9 @@ public class CraftingUI : MonoBehaviour
 
         }//for
 
+        void OnPointerClick(GameObject go) {
+            Debug.Log("clicked a blueprint");
+        }
+
     }//class
 }
