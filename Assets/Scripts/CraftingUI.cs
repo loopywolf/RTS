@@ -17,6 +17,7 @@ public class CraftingUI : MonoBehaviour
     public List<GameObject> CraftableBlocks;
     public GameObject craftSlotPrefab;
     public Transform craftingDesignsPanel;
+    int selectedBlueprint = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class CraftingUI : MonoBehaviour
         //UpdateCraftingDisplay();    //is done at start and then each time you pick something up
         craftingDesignsPanel = craftingPanel.transform.GetChild(0);
         Assert.IsNotNull(craftingDesignsPanel);
-        SetupCraftingDisplay();
+        //SetupCraftingDisplay();
     }//Start
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class CraftingUI : MonoBehaviour
         craftingPanel.gameObject.SetActive(eCraftingDisplaying);
         inventoryPanel.gameObject.SetActive(eInventoryDisplaying);
         //for debugging
-        //SetupCraftingDisplay();
+        SetupCraftingDisplay();
     }//Update
 
     internal void displayEkey(bool displayOrNot) {
@@ -92,7 +93,8 @@ public class CraftingUI : MonoBehaviour
         craftingDesignsPanel.DetachChildren();
 
         for(int i=0;i<AllCraftables.Count;i++) {
-            GameObject craftSlot = Instantiate(craftSlotPrefab, craftingDesignsPanel);
+            GameObject craftSlot = Instantiate(craftSlotPrefab, craftingDesignsPanel.transform);
+            Assert.IsNotNull(craftSlot.transform.parent);
             if (craftSlot != null) {
                 Image iconImage = craftSlot.GetComponent<Image>();
                 if (iconImage != null) {
