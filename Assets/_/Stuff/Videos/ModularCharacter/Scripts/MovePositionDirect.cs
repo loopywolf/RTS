@@ -31,7 +31,7 @@ public class MovePositionDirect : MonoBehaviour, IMovePosition {
         Vector3 moveDir = (movePosition - transform.position).normalized;
         if (Vector3.Distance(movePosition, transform.position) < 1f) moveDir = Vector3.zero; // Stop moving when near
         GetComponent<IMoveVelocity>().SetVelocity(moveDir);
-        Debug.Log("MPDu called");
+        //Debug.Log("MPDu called");
     }
 
 }//class

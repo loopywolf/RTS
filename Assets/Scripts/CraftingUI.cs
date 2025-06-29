@@ -27,6 +27,7 @@ public class CraftingUI : MonoBehaviour
         craftingDesignsPanel = craftingPanel.transform.GetChild(0);
         Assert.IsNotNull(craftingDesignsPanel);
         //SetupCraftingDisplay();
+
     }//Start
 
     // Update is called once per frame
@@ -96,17 +97,16 @@ public class CraftingUI : MonoBehaviour
             GameObject craftSlot = Instantiate(craftSlotPrefab, craftingDesignsPanel.transform);
             Assert.IsNotNull(craftSlot.transform.parent);
             if (craftSlot != null) {
-                Image iconImage = craftSlot.GetComponent<Image>();
-                if (iconImage != null) {
-                    iconImage.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite;
-                }// if not null
-            }//if not null
+                //Image iconImage = craftSlot.GetComponent<Image>();
+                Button iconButton = craftSlot.GetComponent<Button>();
+                /* if (iconImage != null) {
+                    iconImage.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite; */
+                if (iconButton != null) {
+                    iconButton.image.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite;
+                    }// if not null
+                }//if not null
 
         }//for
-
-        void OnPointerClick(GameObject go) {
-            Debug.Log("clicked a blueprint");
-        }
 
     }//class
 }
