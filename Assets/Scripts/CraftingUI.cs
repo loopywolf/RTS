@@ -17,7 +17,9 @@ public class CraftingUI : MonoBehaviour
     public List<GameObject> CraftableBlocks;
     public GameObject craftSlotPrefab;
     public Transform craftingDesignsPanel;
-    int selectedBlueprint = -1;
+    private CraftableSlot currentlySelectedBlueprint;
+    //int selectedBlueprint = -1;
+    //private List<GameObject> AllCraftables;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +28,7 @@ public class CraftingUI : MonoBehaviour
         //UpdateCraftingDisplay();    //is done at start and then each time you pick something up
         craftingDesignsPanel = craftingPanel.transform.GetChild(0);
         Assert.IsNotNull(craftingDesignsPanel);
-        //SetupCraftingDisplay();
+        SetupCraftingDisplay(); //ya it was resetting itself every tick - ayoy
 
     }//Start
 
@@ -37,7 +39,7 @@ public class CraftingUI : MonoBehaviour
         craftingPanel.gameObject.SetActive(eCraftingDisplaying);
         inventoryPanel.gameObject.SetActive(eInventoryDisplaying);
         //for debugging
-        SetupCraftingDisplay();
+        //SetupCraftingDisplay();
     }//Update
 
     internal void displayEkey(bool displayOrNot) {
@@ -109,4 +111,16 @@ public class CraftingUI : MonoBehaviour
         }//for
 
     }//class
+
+    internal void setSelectedBlueprint(CraftableSlot craftableSlot) {
+        //throw NotImplementedException();
+        //1. resets the highlight on all blueprints
+        CraftableSlot[] allCraftableSlots = craftingDesignsPanel.transform.GetComponentsInChildren<CraftableSlot>();
+        foreach(CraftableSlot cs in allCraftableSlots) {
+            cs.setHighlight(false);
+        }
+        //craftableSlot.setHighlight(true);
+        currentlySelectedBlueprint = craftableSlot;
+        //2. records which one is highlighted
+    }
 }

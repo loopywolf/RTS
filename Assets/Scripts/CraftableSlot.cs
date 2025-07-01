@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,15 +9,22 @@ using UnityEngine.UI;
 public class CraftableSlot : MonoBehaviour, IPointerUpHandler
 {
     Outline selectionOutline;
+    private bool highlighted = false;
+    private Color outlineColorOn;
+    private Color outlineColorOff;
+
     // Start is called before the first frame update
     void Start()
     {
+        outlineColorOn = new Color(0.759f, 0f, 0.6468f, 1.0f);
+        outlineColorOff = new Color(outlineColorOn.r, outlineColorOn.g, outlineColorOn.b, 0f);
+        
         selectionOutline = transform.GetComponent<Outline>();//.gameObject;
         //Debug.Log("start: o=" + o);
         Assert.IsNotNull(selectionOutline);
         //o.SetActive(false); //by default, turned off
         //o.enabled = false; //turning off for now
-        selectionOutline.effectColor = new Color(selectionOutline.effectColor.r, selectionOutline.effectColor.g, selectionOutline.effectColor.b, 0f); //cmon WORK! IT WORKED!
+        selectionOutline.effectColor = outlineColorOff;// new Color(outlineColor.r, outlineColor.g, outlineColor.b, 0f); //cmon WORK! IT WORKED!
 
         //Canvas.ForceUpdateCanvases(); did not work
         /*gameObject.SetActive(false);
@@ -67,6 +75,15 @@ public class CraftableSlot : MonoBehaviour, IPointerUpHandler
                 Debug.Log($"Button - Enabled: {btn.enabled}, Interactable: {btn.interactable}, Active: {btn.gameObject.activeInHierarchy}");
             }
         } */
+
+        selectionOutline = transform.GetComponent<Outline>();//.gameObject;
+        Assert.IsNotNull(selectionOutline);
+        Debug.Log("highlight=" + highlighted.ToString());
+        //float alpha = highlighted ? 1.0f : 0f;
+        //selectionOutline.effectColor = new Color(1.0f, 0.2f, 0.2f, alpha);
+        //selectionOutline.effectColor.r, selectionOutline.effectColor.g, selectionOutline.effectColor.b, alpha);
+        selectionOutline.effectColor = highlighted ? outlineColorOn : outlineColorOff;
+
     }
 
     /* void OnMouseDown() { 
@@ -87,7 +104,11 @@ public class CraftableSlot : MonoBehaviour, IPointerUpHandler
     } */
 
     public void OnPointerUp(PointerEventData eventData) {
-        Debug.Log("*** OnPointerUp: " + gameObject.name);
+        //CraftingUI.resetSelected(this);
+        Assert.IsNotNull(Camera.main.GetComponent<CraftingUI>());
+        Camera.main.GetComponent<CraftingUI>().setSelectedBlueprint(this);
+        highlighted = !highlighted;   //gonna have to be more sophisticated alas
+        Debug.Log("*** OnPointerUp: " + gameObject.name + "highlighted=" + highlighted.ToString()) ;
     }
 
     /* public void OnPointerEnter(PointerEventData eventData) {
@@ -102,4 +123,12 @@ public class CraftableSlot : MonoBehaviour, IPointerUpHandler
         Debug.Log("*** BUTTON CLICK: " + gameObject.name);
     } */
 
+    private void Highlight() {
+        //throw new NotImplementedException();
+    }
+
+    internal void setHighlight(bool tOrF) {
+        //throw new NotImplementedException();
+        highlighted = tOrF;
+    }
 }//class
