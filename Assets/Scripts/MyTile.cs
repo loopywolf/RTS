@@ -12,7 +12,7 @@ public class MyTile : MonoBehaviour
     public bool hasItem = true;
     //public GameObject materialCollectible;  //not good enough
     public string formulaForCrafting;
-    public string materialsDropped;
+    public string materialsDropped; // this is where the formula/requirements are stored
 
     // Start is called before the first frame update
     void Start()

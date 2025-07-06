@@ -28,19 +28,19 @@ public class InventoryAP : MonoBehaviour
         //Materials = new List<GameObject>(); 
         //materialsInventory = new Hashtable();
         //materialsInventory = new Dictionary<int, int>(); - we use the graphics instead
-}//F
+    }//F
 
-internal void add(GameObject go)
+    internal void add(GameObject go)
     {
-            //1. add item to internal data (inventory) 
-            /*Item i = go.GetComponent<Item>();
-            if (i == null)
-            {
-                Debug.Log("No Item");
-                return;
-            }//if
-            Debug.Log("i:inventory adding");
-            Debug.Log("i:go=" + go.name);*/
+        //1. add item to internal data (inventory) 
+        /*Item i = go.GetComponent<Item>();
+        if (i == null)
+        {
+            Debug.Log("No Item");
+            return;
+        }//if
+        Debug.Log("i:inventory adding");
+        Debug.Log("i:go=" + go.name);*/
         if(go.GetComponent<MyTile>() == null ||
             !go.GetComponent<MyTile>().hasItem)
         {

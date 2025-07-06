@@ -14,12 +14,12 @@ public class CraftingUI : MonoBehaviour
     private bool eInventoryDisplaying = false;
     private bool eCraftingDisplaying = false;
     public static int MAX_CRAFTING_RANGE = 7;
-    public List<GameObject> CraftableBlocks;
+    //public List<GameObject> CraftableBlocks;    
     public GameObject craftSlotPrefab;
     public Transform craftingDesignsPanel;
     private CraftableSlot currentlySelectedBlueprint;
     //int selectedBlueprint = -1;
-    //private List<GameObject> AllCraftables;
+    private List<GameObject> AllCraftables;
 
     // Start is called before the first frame update
     void Start()
@@ -81,10 +81,11 @@ public class CraftingUI : MonoBehaviour
             .ToArray();*/
 
         //Get all objects in the Prefabs folder
-        GameObject[] allPrefabs = Resources.LoadAll<GameObject>("craftables");
+        GameObject[] allPrefabs = Resources.LoadAll<GameObject>("craftables");  //kind of like magic
 
         // Filter by tag
-        List<GameObject> AllCraftables = new List<GameObject>();
+        //List<GameObject>
+        AllCraftables = new List<GameObject>();
         foreach (GameObject prefab in allPrefabs) {
             if (prefab.CompareTag("craftable")) {
                 AllCraftables.Add(prefab);
@@ -120,7 +121,46 @@ public class CraftingUI : MonoBehaviour
             cs.setHighlight(false);
         }
         //craftableSlot.setHighlight(true);
-        currentlySelectedBlueprint = craftableSlot;
         //2. records which one is highlighted
+        currentlySelectedBlueprint = craftableSlot;
+        //3. Update REQUIRED display
+        updateRequiredDisplay();
     }
-}
+
+    private void updateRequiredDisplay() {
+        //throw new NotImplementedException();
+        //1. Check if Fab-o-Mat is nearby
+        if(!eKeyDisplaying) { //then Fab-o-Mat is not near
+            //add Fab-o-Mat icon
+        }
+        //2. Find list of required mats from currentlySelectedBluePrint
+        if(currentlySelectedBlueprint!=null) {
+            Image i = currentlySelectedBlueprint.GetComponent<Image>();
+            Assert.IsNotNull(i);
+            Sprite s = i.sprite;
+            Assert.IsNotNull(s);
+            //now we need to find the tile that has that exact same sprite = i.sprite
+            GameObject craftable = findCraftableBySprite(s);
+            Debug.Log("Craftable found " + craftable.name);
+            //craftable is a gameobject with a MyTile and a sprite
+            MyTile mt = craftable.GetComponent<MyTile>();
+            Assert.IsNotNull(mt);
+            Debug.Log("requirements=" + mt.formulaForCrafting);
+        }
+        //3. Add sprits to the required display (clear it first.)
+    }//F
+
+    private GameObject findCraftableBySprite(Sprite s) {
+        //throw new NotImplementedException();
+        foreach( GameObject go in AllCraftables) {
+            //MyTile mt = go.GetComponent<MyTile>();
+            //Assert.IsNotNull(mt);
+            SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+            Assert.IsNotNull(sr);
+            if (sr.sprite == s) return go;
+        }
+
+        return null;
+    }
+
+}//class

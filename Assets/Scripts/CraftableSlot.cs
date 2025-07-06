@@ -106,9 +106,16 @@ public class CraftableSlot : MonoBehaviour, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData) {
         //CraftingUI.resetSelected(this);
         Assert.IsNotNull(Camera.main.GetComponent<CraftingUI>());
-        Camera.main.GetComponent<CraftingUI>().setSelectedBlueprint(this);
+        Camera.main.GetComponent<CraftingUI>().setSelectedBlueprint(this);  //this is all we need
         highlighted = !highlighted;   //gonna have to be more sophisticated alas
         Debug.Log("*** OnPointerUp: " + gameObject.name + "highlighted=" + highlighted.ToString()) ;
+        /* //now I want to identify the sprite, somehow.
+        Image i = gameObject.GetComponent<Image>();
+        Assert.IsNotNull(i);
+        Debug.Log("Sprite name=" + i.sprite.name);//got sprite name
+        CraftingUI cUi = Camera.main.GetComponent<CraftingUI>();
+        Assert.IsNotNull(cUi);
+        cUi.update */        
     }
 
     /* public void OnPointerEnter(PointerEventData eventData) {
