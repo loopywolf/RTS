@@ -19,6 +19,8 @@ public class InventoryAP : MonoBehaviour
     //private Dictionary<int, int> materialsInventory;
     public GameObject uiMaterialsPanel; //panel
     public GameObject uiMatSlotPrefab;   //link to the prefab
+    //Taking over the crafting requirements panel
+    public GameObject uiRequiredPanel; //panel
 
     //TODO once it works, removes the dummy entry
 
@@ -74,7 +76,7 @@ public class InventoryAP : MonoBehaviour
         //throw new NotImplementedException();
     }//F
 
-    private void refreshDisplay()
+    private void refreshDisplay() //this seems common between CraftingUI.. Maybe it could be abstracted
     {
         //2a. get container - got
         //2b. clear container
@@ -138,6 +140,7 @@ public class InventoryAP : MonoBehaviour
         if(ms==null) { //so make a new one             
             //materialsInventory[material] = 1;  //amount has to be set to 1 - it is set by default
             GameObject go = Instantiate(uiMatSlotPrefab, uiMaterialsPanel.transform);   //adds the material slot prefab
+            //go.transform.localScale = Vector3.one; //wasn't this
             //set sprite
             Sprite s = hc.GetComponent<SpriteRenderer>().sprite;
             Assert.IsNotNull(s);    //should never be null
@@ -168,4 +171,37 @@ public class InventoryAP : MonoBehaviour
         
         return null;
     }//F
+
+    public void addRequired(GameObject healthCollectible) {
+        //trying to get this to work by duplicating Inventory
+
+        GameObject hc = healthCollectible;
+
+        //MaterialSlot ms = getMaterialSlot(hc); //not applicable
+        //if (ms == null) { //so make a new one             
+        //materialsInventory[material] = 1;  //amount has to be set to 1 - it is set by default
+
+        clearRequired();
+        GameObject go = Instantiate(uiMatSlotPrefab, uiRequiredPanel.transform);   //adds the material slot prefab
+        Sprite s = hc.GetComponent<SpriteRenderer>().sprite;
+        Assert.IsNotNull(s);    //should never be null
+        Assert.IsNotNull(go);   //should never be null;
+        go.GetComponent<Image>().sprite = s;    //should be safe
+
+        //amount has been set automatically to 1 for a new instantiation
+        /*  } else { //it found the slot
+        //if(materialsInventory.ContainsKey(material)) {
+        ms.increment();
+        }//if */
+
+        Debug.Log("added required=" + hc.name);
+    }//F
+
+    private void clearRequired() {
+        //throw new NotImplementedException();
+        for (int i = uiRequiredPanel.transform.childCount - 1; i >= 0; i--) {
+            Destroy(uiRequiredPanel.transform.GetChild(i).gameObject);
+        }
+    }//F
+
 }//class

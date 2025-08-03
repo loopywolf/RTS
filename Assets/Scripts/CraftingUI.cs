@@ -20,6 +20,8 @@ public class CraftingUI : MonoBehaviour
     private CraftableSlot currentlySelectedBlueprint;
     //int selectedBlueprint = -1;
     private List<GameObject> AllCraftables;
+    public GameObject requirementsSlotsParent;
+    public GameObject inventorySlotPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -123,11 +125,12 @@ public class CraftingUI : MonoBehaviour
         //craftableSlot.setHighlight(true);
         //2. records which one is highlighted
         currentlySelectedBlueprint = craftableSlot;
+
         //3. Update REQUIRED display
         updateRequiredDisplay();
     }
 
-    private void updateRequiredDisplay() {
+    private void updateRequiredDisplay() {  //try this a totally different way
         //throw new NotImplementedException();
         //1. Check if Fab-o-Mat is nearby
         if(!eKeyDisplaying) { //then Fab-o-Mat is not near
@@ -139,13 +142,103 @@ public class CraftingUI : MonoBehaviour
             Assert.IsNotNull(i);
             Sprite s = i.sprite;
             Assert.IsNotNull(s);
+
             //now we need to find the tile that has that exact same sprite = i.sprite
             GameObject craftable = findCraftableBySprite(s);
             Debug.Log("Craftable found " + craftable.name);
             //craftable is a gameobject with a MyTile and a sprite
             MyTile mt = craftable.GetComponent<MyTile>();
             Assert.IsNotNull(mt);
-            Debug.Log("requirements=" + mt.formulaForCrafting);
+            Debug.Log("requirements=" + mt.formulaForCrafting); //1silicate
+
+            //1. clear requirements display
+            /* foreach (Transform child in requirementsSlotsParent.transform) {
+                GameObject.Destroy(child.gameObject);
+            }//for clear
+            Debug.Log("craftUIreq:removed children"); */
+
+            //2. For each requirement, add to the panel
+            //for -there is only one for now
+            String materialName = mt.formulaForCrafting.Substring(1); //skip the amount
+            GameObject foundMaterial = null;
+
+            //find the material
+            //Assert.IsNotNull(Camera.main.GetComponent<InventoryAP>());  //it should never be
+            //Assert.IsNotNull(Camera.main.GetComponent<InventoryAP>().MaterialSprites);  //it should never be
+
+            //I am a component of a child of CameraController
+            Assert.IsNotNull(Camera.main.GetComponent<CameraController>());
+            InventoryAP iap = Camera.main.GetComponent<CameraController>().getInventoryAp();
+            Assert.IsNotNull(iap);
+
+            // Before accessing MaterialSprites: Claude debug
+            Debug.Log($"Accessing MaterialSprites on {gameObject.name}");
+            Debug.Log($"MaterialSprites null check: {iap.MaterialSprites == null}");
+            Debug.Log($"This object null check: {this == null}");
+            Debug.Log($"GameObject null check: {gameObject == null}");
+
+            // Then try to access it in a try-catch:
+            try {
+                GameObject cmgcims = iap.MaterialSprites[0];
+                Debug.Log("Trying to match mat=" + cmgcims.name + " to " + materialName);
+            } catch (MissingReferenceException e) {
+                Debug.LogError($"MissingReferenceException caught: {e.Message}");
+                Debug.LogError($"Stack trace: {e.StackTrace}");
+            }
+            // Claude debug */
+
+
+            for (int i2 = 0; i2 < iap.MaterialSprites.Count; i2++) {
+
+                Debug.Log($"MaterialSprites[{i2}] null check: {iap.MaterialSprites[i2] == null}");
+
+                // Try to access just the reference without assigning
+                var testRef = iap.MaterialSprites[i2];
+                Debug.Log($"Retrieved reference, is null: {testRef == null}");
+
+                // Now try to access the name
+                if (testRef != null) {
+                    Debug.Log($"About to access .name property");
+                    string testName = testRef.name;
+                    Debug.Log($"Name accessed successfully: {testName}");
+                }
+
+                if (iap.MaterialSprites[i2] != null) {
+                    // This might throw the exception even though the null check passed
+                    bool isDestroyed = iap.MaterialSprites[i2] == null; // Unity's overloaded null check
+                    Debug.Log($"Unity null check (destroyed): {isDestroyed}");
+                }
+                GameObject cmgcims = iap.MaterialSprites[i2];
+                Debug.Log("Trying to match mat=" + cmgcims.name + " to " + materialName);
+                if (cmgcims.name.Equals(materialName)) 
+                    foundMaterial = cmgcims;
+            }//for
+
+            Assert.IsNotNull(foundMaterial);
+            Debug.Log("I have the material");
+
+            iap.addRequired(foundMaterial); //attempt number 2
+
+            /*
+             * //and add it to the display
+            GameObject newSlot = Instantiate(inventorySlotPrefab, requirementsSlotsParent.transform);
+            //DEBUG
+            Debug.Log("Grid cell size: " + requirementsSlotsParent.GetComponent<GridLayoutGroup>().cellSize);
+
+            Transform icontf = newSlot.transform.GetChild(0); //clumsy... //TODO
+            //DEBUG
+            Debug.Log("Icon RectTransform size: " + icontf.GetComponent<RectTransform>().sizeDelta);
+
+            if (icontf != null) {
+                Image iconImage = icontf.gameObject.GetComponent<Image>();
+                if (iconImage != null) {
+                    iconImage.sprite = foundMaterial.GetComponent<SpriteRenderer>().sprite;
+                    Debug.Log("craft:display changed " + iconImage.sprite.name);
+                }//if iconImage OK
+            }//if icon OK
+            */
+
+            //Now, we must update the display with the (List of) material(s)
         }
         //3. Add sprits to the required display (clear it first.)
     }//F

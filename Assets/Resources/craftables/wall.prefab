@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasItem: 1
-  formulaForCrafting: 1silicate
-  materialsDropped: 1silicate
+  formulaForCrafting: 1metal
+  materialsDropped: 1metal
 --- !u!61 &8301805179033178831
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -115,7 +115,7 @@ public class CraftableSlot : MonoBehaviour, IPointerUpHandler
         Debug.Log("Sprite name=" + i.sprite.name);//got sprite name
         CraftingUI cUi = Camera.main.GetComponent<CraftingUI>();
         Assert.IsNotNull(cUi);
-        cUi.update */        
+        cUi.update */       
     }
 
     /* public void OnPointerEnter(PointerEventData eventData) {
