@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
 
         if( Input.GetKeyUp( KeyCode.I))
         {
-            GetComponent<InventoryAP>().switchInventoryOnOff();
+            GetComponent<InventoryAP>().switchInventoryOnOff(); //old
         }//if
 
         if(Input.GetKeyUp( KeyCode.E)) 

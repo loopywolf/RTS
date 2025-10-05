@@ -690,11 +690,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 0.94
       objectReference: {fileID: 0}
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -1.03
       objectReference: {fileID: 0}
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1374,6 +1374,7 @@ MonoBehaviour:
   craftingDesignsPanel: {fileID: 1164155396}
   requirementsSlotsParent: {fileID: 0}
   inventorySlotPrefab: {fileID: 4526381694806002805, guid: 3b67c6f4f1964514f8d73a4e7f3c1f15, type: 3}
+  crossesDisplay: {fileID: 765915943}
 --- !u!1 &554739206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,6 +4359,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4886283069152107437, guid: aacc2a24a5866854c812789d6e0bc892, type: 3}
   m_PrefabInstance: {fileID: 968711663}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &765915943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765915944}
+  - component: {fileID: 765915945}
+  m_Layer: 0
+  m_Name: CraftHere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &765915944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765915943}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1635934622}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &765915945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765915943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c9c2da248cc29488c1886276d3f20a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craftingCrossSprite: {fileID: 4025739321835793404, guid: 1409023c94724b4458b56ea53616a7cd, type: 3}
 --- !u!4 &827679661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1657904500326469070, guid: ff83d7962fb711b4f946407eae8f5380, type: 3}
@@ -6408,7 +6454,7 @@ GameObject:
   - component: {fileID: 1635934626}
   - component: {fileID: 1635934627}
   m_Layer: 0
-  m_Name: sample-tiles_0 (13)
+  m_Name: fab-o-mat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6426,7 +6472,8 @@ Transform:
   m_LocalPosition: {x: -10, y: -11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 765915944}
   m_Father: {fileID: 912941515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1635934625
@@ -8783,7 +8830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CRAFT
+  m_text: PLACE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9d5c470ffc5b07f4bbd6e1248fe73611, type: 2}
   m_sharedMaterial: {fileID: -467526583105912971, guid: 9d5c470ffc5b07f4bbd6e1248fe73611, type: 2}
@@ -9227,7 +9274,7 @@ GameObject:
   - component: {fileID: 1975722773}
   - component: {fileID: 1975722772}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: DunnoWhatThisIs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9606,7 +9653,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2134533026}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 519420034}
+        m_TargetAssemblyTypeName: CraftingUI, Assembly-CSharp
+        m_MethodName: pickCraftingPlace
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2134533026
 MonoBehaviour:
   m_ObjectHideFlags: 0

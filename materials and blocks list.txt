@@ -6,23 +6,23 @@ To start, the player has only themselves and the crafting table, the Fab-o-Mat.
 BASE BLOCKS--------------
 There are 10 base blocks 
 	AUTOMATIC
-		Fab-o-Mat < always
+		[✓] Fab-o-Mat < always
 	COMMON MATS
-		Storage < Silicate
-		Corridor < Silicate
-		Fence < Metal
-		Mine < Metal
+		Storage [✓] < Silicate [✓]
+		Corridor [✓] < Silicate [✓]
+		Fence < Metal [✓]
+		Mine < Metal [✓]
 	SCARCE MATS
-		Perimeter Sensor < Rare Metal
-		Hydroponics < Organics
-		Landing Pad < Fuel, Rare Metal
+		Perimeter Sensor < Rare Metal [✓]
+		Hydroponics(..) < Organics [✓]
+		Landing Pad < Fuel[✓], Rare Metal[✓]
 	RARE MATS
-		Reactor, Meteor Defense Turret < Radioactives
+		Reactor, Meteor Defense Turret < Radioactives[✓]
 	LANDING PAD REQUIRED
-		Cockpit < Organics, Rare Metal, Metal
-		Engine < Fuel
-		Reactor < Radioactives
-		Cargo Hold < MetalO
+		Cockpit < Organics[✓], Rare Metal[✓], Metal[✓]
+		Engine < Fuel[✓]
+		Reactor < Radioactives[✓]
+		Cargo Hold < Metal[✓]
 
 The top of the map is a 2D horizon, and that is where the landing pad must be built, so the other blocks start there.   
 Radiating out from this point materials are common, scarce and then rare.

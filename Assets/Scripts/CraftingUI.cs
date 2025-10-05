@@ -22,6 +22,7 @@ public class CraftingUI : MonoBehaviour
     private List<GameObject> AllCraftables;
     public GameObject requirementsSlotsParent;
     public GameObject inventorySlotPrefab;
+    public GameObject crossesDisplay;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,10 @@ public class CraftingUI : MonoBehaviour
         craftingDesignsPanel = craftingPanel.transform.GetChild(0);
         Assert.IsNotNull(craftingDesignsPanel);
         SetupCraftingDisplay(); //ya it was resetting itself every tick - ayoy
+
+        //good to check
+        Assert.IsNotNull(this.crossesDisplay);
+        Assert.IsNotNull(crossesDisplay.GetComponent<CraftingCrosses>());
 
     }//Start
 
@@ -50,7 +55,7 @@ public class CraftingUI : MonoBehaviour
 
     internal void craftingOnOff() {
         //throw new NotImplementedException();
-        //if(eKeyDisplaying)
+        if(eKeyDisplaying)
             eCraftingDisplaying = !eCraftingDisplaying;
         eInventoryDisplaying = !eInventoryDisplaying;
         Debug.Log("Crafting On");
@@ -254,6 +259,13 @@ public class CraftingUI : MonoBehaviour
         }
 
         return null;
+    }//F
+
+    public void pickCraftingPlace() {
+        Debug.Log("I picked a place");
+        //first click lights up the crosses
+        crossesDisplay.GetComponent<CraftingCrosses>().crossesOn(true);   //lights up the crosses
+        //second click is from crosses, and it places the block
     }
 
 }//class
