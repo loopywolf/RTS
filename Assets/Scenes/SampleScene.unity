@@ -1265,9 +1265,8 @@ MonoBehaviour:
   cameraSpeed: 3
   powEffect: {fileID: 4990947906823365752, guid: d3ef68bb25561ac4693a0325e7b75a20, type: 3}
   currentPlayer: {fileID: 337177511}
-  DestructibleTileLayer: {fileID: 82998832}
-  TileLayer2: {fileID: 662226941}
   gatherEffect: {fileID: 2172967665549776573, guid: 3aa0a26219d410c41a77134d3fb5974e, type: 3}
+  tileMap: {fileID: 912941514}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

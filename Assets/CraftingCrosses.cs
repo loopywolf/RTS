@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class CraftingCrosses : MonoBehaviour
 {
@@ -29,6 +30,11 @@ public class CraftingCrosses : MonoBehaviour
         //throw new NotImplementedException();
         Debug.Log("Placing at " + position.x + " " + position.y);
         crossesOn(false);
+        //Next steps
+        //1. place a block at that location
+        Assert.IsNotNull(Camera.main.GetComponent<CraftingUI>());
+        Camera.main.GetComponent<CraftingUI>().placeBlock( position ); //eg. -2 1
+        //2. identify which block was to be placed
     }
 
     // Update is called once per frame

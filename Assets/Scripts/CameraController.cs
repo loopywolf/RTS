@@ -10,10 +10,10 @@ public class CameraController : MonoBehaviour
     public float cameraSpeed;
     public GameObject powEffect;
     public GameObject currentPlayer;
-    public GameObject DestructibleTileLayer;
-    private Grid destructibleGrid;
-    public GameObject TileLayer2;
-    private TileMapAP tiles2;
+    //public GameObject DestructibleTileLayer;
+    //private Grid destructibleGrid;
+    //public GameObject TileLayer2;
+    //private TileMapAP tiles2;
     public GameObject gatherEffect;
     //inventory
     InventoryAP myInventory;
@@ -22,12 +22,14 @@ public class CameraController : MonoBehaviour
     private Vector3 SelectEndPos;
     //eKey
     CraftingUI myCraftingUi;
+    //tilemap
+    public GameObject tileMap;
 
     // Start is called before the first frame update
     void Start()
     {
         currentPlayer = GameObject.Find("Player");  //this will be switchable, but for now is OK
-        destructibleGrid = DestructibleTileLayer.GetComponent<Grid>();
+        //destructibleGrid = DestructibleTileLayer.GetComponent<Grid>();
         myInventory = GetComponent<InventoryAP>();
         myCraftingUi = GetComponent<CraftingUI>();
     }//Start
@@ -135,4 +137,8 @@ public class CameraController : MonoBehaviour
         return myInventory;
     }
 
+    internal GameObject getTileMap() {
+        //throw new NotImplementedException();
+        return tileMap;
+    }
 }//class

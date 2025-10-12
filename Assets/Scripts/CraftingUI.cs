@@ -19,10 +19,19 @@ public class CraftingUI : MonoBehaviour
     public Transform craftingDesignsPanel;
     private CraftableSlot currentlySelectedBlueprint;
     //int selectedBlueprint = -1;
-    private List<GameObject> AllCraftables;
+    //private List<GameObject> AllCraftables;
+    public List<CraftableData> AllCraftables;
     public GameObject requirementsSlotsParent;
     public GameObject inventorySlotPrefab;
     public GameObject crossesDisplay;
+    private CraftableData chosenRecipe = null;
+
+    [System.Serializable]
+    public class CraftableData
+    {
+        public Sprite sprite;
+        public GameObject prefab;
+    }//class
 
     // Start is called before the first frame update
     void Start()
@@ -88,18 +97,20 @@ public class CraftingUI : MonoBehaviour
             .ToArray();*/
 
         //Get all objects in the Prefabs folder
-        GameObject[] allPrefabs = Resources.LoadAll<GameObject>("craftables");  //kind of like magic
+        /* CraftableData[] allPrefabs = Resources.LoadAll<CraftableData>("craftables");  //kind of like magic
 
         // Filter by tag
         //List<GameObject>
-        AllCraftables = new List<GameObject>();
-        foreach (GameObject prefab in allPrefabs) {
-            if (prefab.CompareTag("craftable")) {
-                AllCraftables.Add(prefab);
+        AllCraftables = new List<CraftableData>();
+        foreach (CraftableData ap in allPrefabs) {
+            if (ap.prefab.CompareTag("craftable")) {
+                AllCraftables.Add(ap);
             }
-        }
+        } 
         Assert.IsNotNull(AllCraftables); //this cannot happen
-        Assert.AreNotEqual(AllCraftables.Count, 0);
+        Assert.AreNotEqual(AllCraftables.Count, 0); */
+
+        LoadAllCraftables();
 
         craftingDesignsPanel.DetachChildren();
 
@@ -112,7 +123,7 @@ public class CraftingUI : MonoBehaviour
                 /* if (iconImage != null) {
                     iconImage.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite; */
                 if (iconButton != null) {
-                    iconButton.image.sprite = AllCraftables[i].GetComponent<SpriteRenderer>().sprite;
+                    iconButton.image.sprite = AllCraftables[i].sprite;
                     }// if not null
                 }//if not null
 
@@ -149,11 +160,12 @@ public class CraftingUI : MonoBehaviour
             Assert.IsNotNull(s);
 
             //now we need to find the tile that has that exact same sprite = i.sprite
-            GameObject craftable = findCraftableBySprite(s);
-            Debug.Log("Craftable found " + craftable.name);
+            CraftableData craftable = findCraftableBySprite(s); //a prefab
+            Debug.Log("Craftable found " + craftable.sprite.name);
             //craftable is a gameobject with a MyTile and a sprite
-            MyTile mt = craftable.GetComponent<MyTile>();
+            MyTile mt = craftable.prefab.GetComponent<MyTile>();
             Assert.IsNotNull(mt);
+            this.chosenRecipe = craftable;  //sets the block to be created - should now be a prefab
             Debug.Log("requirements=" + mt.formulaForCrafting); //1silicate
 
             //1. clear requirements display
@@ -248,7 +260,7 @@ public class CraftingUI : MonoBehaviour
         //3. Add sprits to the required display (clear it first.)
     }//F
 
-    private GameObject findCraftableBySprite(Sprite s) {
+    /* private GameObject findCraftableBySpriteOld(Sprite s) {
         //throw new NotImplementedException();
         foreach( GameObject go in AllCraftables) {
             //MyTile mt = go.GetComponent<MyTile>();
@@ -259,13 +271,53 @@ public class CraftingUI : MonoBehaviour
         }
 
         return null;
-    }//F
+    }//F */
+    private CraftableData findCraftableBySprite(Sprite s) {
+        foreach (CraftableData data in AllCraftables) {
+            if (data.sprite == s) {
+                return data; //now it should be a prefab
+            }
+        }
+        return null;
+    }
 
-    public void pickCraftingPlace() {
+    public void pickCraftingPlace() { //from button
         Debug.Log("I picked a place");
         //first click lights up the crosses
         crossesDisplay.GetComponent<CraftingCrosses>().crossesOn(true);   //lights up the crosses
         //second click is from crosses, and it places the block
+    }
+    internal void placeBlock(Vector3 position) {
+        //throw new NotImplementedException();//continuity!
+        //we have the position
+        //Assert.IsNotNull(chosenRecipe);
+        GameObject go = Instantiate(chosenRecipe.prefab, position, Quaternion.identity);//chosen recipe must be a prefab (CS03111)
+        //OLD GameObject go = Instantiate(craftingCrossSprite, new Vector3(i, j, 0), Quaternion.identity);
+        GameObject tm = Camera.main.GetComponent<CameraController>().getTileMap();
+        Assert.IsNotNull(tm);
+        //go.transform.SetParent( tm.transform, worldPositionStays: false); 
+    }
+    private void LoadAllCraftables() {
+        AllCraftables.Clear();
+
+        // Load all prefabs from Resources folder with tag "craftable"
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("craftables");
+
+        foreach (GameObject prefab in prefabs) {
+            if (prefab.CompareTag("craftable")) {
+                CraftableData data = new CraftableData();
+                data.prefab = prefab;
+
+                // Get the sprite from the prefab
+                SpriteRenderer sr = prefab.GetComponentInChildren<SpriteRenderer>();
+                if (sr != null) {
+                    data.sprite = sr.sprite;
+                    AllCraftables.Add(data);    //populates AllCraftables
+                }
+            }
+        }//foreach - thanks Claude
+
+        Debug.Log($"Loaded {AllCraftables.Count} craftable prefabs");
     }
 
 }//class
