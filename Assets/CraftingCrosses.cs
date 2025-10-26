@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 public class CraftingCrosses : MonoBehaviour
 {
     public GameObject craftingCrossSprite; //used to populate the matrix;
-    public static int span = 2;
+    public static int span = 5;
 
     // Start is called before the first frame update
     void Start()

@@ -688,13 +688,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 88812961842000671, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 88812961842000671, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.94
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.03
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2531235064266254100, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
       propertyPath: m_LocalPosition.z
@@ -740,6 +748,10 @@ PrefabInstance:
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 1778115251}
+    - target: {fileID: 8074478722477115279, guid: 8e07bf61cc469d2469d69a20debf6655, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1371,6 +1383,7 @@ MonoBehaviour:
   inventoryPanel: {fileID: 331272372}
   craftSlotPrefab: {fileID: 1414805585905189845, guid: 34a03ea310bece64ca9e6a6e9f80836e, type: 3}
   craftingDesignsPanel: {fileID: 1164155396}
+  AllCraftables: []
   requirementsSlotsParent: {fileID: 0}
   inventorySlotPrefab: {fileID: 4526381694806002805, guid: 3b67c6f4f1964514f8d73a4e7f3c1f15, type: 3}
   crossesDisplay: {fileID: 765915943}

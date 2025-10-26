@@ -291,6 +291,7 @@ public class CraftingUI : MonoBehaviour
         //throw new NotImplementedException();//continuity!
         //we have the position
         //Assert.IsNotNull(chosenRecipe);
+
         GameObject go = Instantiate(chosenRecipe.prefab, position, Quaternion.identity);//chosen recipe must be a prefab (CS03111)
         //OLD GameObject go = Instantiate(craftingCrossSprite, new Vector3(i, j, 0), Quaternion.identity);
         GameObject tm = Camera.main.GetComponent<CameraController>().getTileMap();

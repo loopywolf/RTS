@@ -195,6 +195,9 @@ public class InventoryAP : MonoBehaviour
         }//if */
 
         Debug.Log("added required=" + hc.name);
+
+        //TODO now check if we have those requirements to see if the button should be disabled
+        bool placeButtonEnabled = areRequirementsSatisfied();
     }//F
 
     private void clearRequired() {
@@ -204,4 +207,19 @@ public class InventoryAP : MonoBehaviour
         }
     }//F
 
+    private bool areRequirementsSatisfied() {
+        for (int i = uiRequiredPanel.transform.childCount - 1; i >= 0; i--) {
+            //if (!hasEnoughOfMaterial(uiRequiredPanel.transform.GetChild(i).gameObject)) return false;
+            MaterialSlot ms = getMaterialSlot(uiRequiredPanel.transform.GetChild(i).gameObject);
+            if (ms == null) return false;
+        }//for
+
+        return true;
+    }//F
+
+    private bool hasEnoughOfMaterial(GameObject gameObject) {
+        //throw new NotImplementedException();
+
+        return true;
+    }
 }//class
