@@ -25,6 +25,7 @@ public class CraftingUI : MonoBehaviour
     public GameObject inventorySlotPrefab;
     public GameObject crossesDisplay;
     private CraftableData chosenRecipe = null;
+    public GameObject placeButton;
 
     [System.Serializable]
     public class CraftableData
@@ -136,9 +137,13 @@ public class CraftingUI : MonoBehaviour
         //1. resets the highlight on all blueprints
         CraftableSlot[] allCraftableSlots = craftingDesignsPanel.transform.GetComponentsInChildren<CraftableSlot>();
         foreach(CraftableSlot cs in allCraftableSlots) {
-            cs.setHighlight(false);
+            cs.setHighlight(false); //turns them all off
         }
         //craftableSlot.setHighlight(true);
+
+        //1.5 Check if the player has the required mats, or keep the Place button disabled
+        //and once they are identified, keep them so we can remove them from the ..
+
         //2. records which one is highlighted
         currentlySelectedBlueprint = craftableSlot;
 
@@ -153,20 +158,24 @@ public class CraftingUI : MonoBehaviour
             //add Fab-o-Mat icon
         }
         //2. Find list of required mats from currentlySelectedBluePrint
+        //2a. While finding them, why not check if we have them in inventory too?
+        //bool iHaveWhatIneed = false;
+        //bool readyToPlace = false;
         if(currentlySelectedBlueprint!=null) {
-            Image i = currentlySelectedBlueprint.GetComponent<Image>();
+            Image i = currentlySelectedBlueprint.GetComponent<Image>(); //image of blueprint
             Assert.IsNotNull(i);
-            Sprite s = i.sprite;
+            Sprite s = i.sprite; //sprite of blueprint
             Assert.IsNotNull(s);
 
             //now we need to find the tile that has that exact same sprite = i.sprite
-            CraftableData craftable = findCraftableBySprite(s); //a prefab
+            CraftableData craftable = findCraftableBySprite(s); //prefab craftable that matches sprite
+
             Debug.Log("Craftable found " + craftable.sprite.name);
             //craftable is a gameobject with a MyTile and a sprite
-            MyTile mt = craftable.prefab.GetComponent<MyTile>();
+            MyTile mt = craftable.prefab.GetComponent<MyTile>(); //MyTile of craftable
             Assert.IsNotNull(mt);
             this.chosenRecipe = craftable;  //sets the block to be created - should now be a prefab
-            Debug.Log("requirements=" + mt.formulaForCrafting); //1silicate
+            Debug.Log("requirements=" + mt.formulaForCrafting); //1silicate - save this recipe
 
             //1. clear requirements display
             /* foreach (Transform child in requirementsSlotsParent.transform) {
@@ -176,7 +185,7 @@ public class CraftingUI : MonoBehaviour
 
             //2. For each requirement, add to the panel
             //for -there is only one for now
-            String materialName = mt.formulaForCrafting.Substring(1); //skip the amount
+            String materialName = mt.formulaForCrafting.Substring(1); //skip the amount - "silicate"
             GameObject foundMaterial = null;
 
             //find the material
@@ -189,10 +198,10 @@ public class CraftingUI : MonoBehaviour
             Assert.IsNotNull(iap);
 
             // Before accessing MaterialSprites: Claude debug
-            Debug.Log($"Accessing MaterialSprites on {gameObject.name}");
+            /*Debug.Log($"Accessing MaterialSprites on {gameObject.name}");
             Debug.Log($"MaterialSprites null check: {iap.MaterialSprites == null}");
             Debug.Log($"This object null check: {this == null}");
-            Debug.Log($"GameObject null check: {gameObject == null}");
+            Debug.Log($"GameObject null check: {gameObject == null}");*/
 
             // Then try to access it in a try-catch:
             try {
@@ -203,7 +212,6 @@ public class CraftingUI : MonoBehaviour
                 Debug.LogError($"Stack trace: {e.StackTrace}");
             }
             // Claude debug */
-
 
             for (int i2 = 0; i2 < iap.MaterialSprites.Count; i2++) {
 
@@ -232,32 +240,53 @@ public class CraftingUI : MonoBehaviour
             }//for
 
             Assert.IsNotNull(foundMaterial);
-            Debug.Log("I have the material");
+            Debug.Log("I have the material"); 
 
             iap.addRequired(foundMaterial); //attempt number 2
 
-            /*
-             * //and add it to the display
-            GameObject newSlot = Instantiate(inventorySlotPrefab, requirementsSlotsParent.transform);
-            //DEBUG
-            Debug.Log("Grid cell size: " + requirementsSlotsParent.GetComponent<GridLayoutGroup>().cellSize);
+            //Debug.Log("about to break");
 
-            Transform icontf = newSlot.transform.GetChild(0); //clumsy... //TODO
-            //DEBUG
-            Debug.Log("Icon RectTransform size: " + icontf.GetComponent<RectTransform>().sizeDelta);
+            /* CLAUDE FIX 1
+            //bool placeButtonOn = iap.enablePlaceButton(foundMaterial);
+            bool placeButtonOn = iap.areRequirementsSatisfied(); //can I bring this out of this function?
+            Debug.Log("placebutton=" + placeButtonOn);
 
-            if (icontf != null) {
-                Image iconImage = icontf.gameObject.GetComponent<Image>();
-                if (iconImage != null) {
-                    iconImage.sprite = foundMaterial.GetComponent<SpriteRenderer>().sprite;
-                    Debug.Log("craft:display changed " + iconImage.sprite.name);
-                }//if iconImage OK
-            }//if icon OK
-            */
+            //TODO enable or disable the button here
+            Assert.IsNotNull(placeButton);
+            Assert.IsNotNull(placeButton.GetComponent<Button>());
+            placeButton.GetComponent<Button>().interactable = placeButtonOn; */
 
-            //Now, we must update the display with the (List of) material(s)
-        }
+            //CLAUDE FIX 1
+            StartCoroutine(UpdatePlaceButtonNextFrame());
+
+    //now, I want to enable/disable the Place button depending on whether the player HAS that material
+    //NOTE: there is only 1 material currently (tech debt)
+    //Since we are calling inventory anyway, 
+
+    /*
+     * //and add it to the display
+    GameObject newSlot = Instantiate(inventorySlotPrefab, requirementsSlotsParent.transform);
+    //DEBUG
+    Debug.Log("Grid cell size: " + requirementsSlotsParent.GetComponent<GridLayoutGroup>().cellSize);
+
+    Transform icontf = newSlot.transform.GetChild(0); //clumsy... //TODO
+    //DEBUG
+    Debug.Log("Icon RectTransform size: " + icontf.GetComponent<RectTransform>().sizeDelta);
+
+    if (icontf != null) {
+        Image iconImage = icontf.gameObject.GetComponent<Image>();
+        if (iconImage != null) {
+            iconImage.sprite = foundMaterial.GetComponent<SpriteRenderer>().sprite;
+            Debug.Log("craft:display changed " + iconImage.sprite.name);
+        }//if iconImage OK
+    }//if icon OK
+    */
+
+    //Now, we must update the display with the (List of) material(s)
+    //bool weGotIt = iap.doWeHaveTheRequiredMaterials();
+}
         //3. Add sprits to the required display (clear it first.)
+
     }//F
 
     /* private GameObject findCraftableBySpriteOld(Sprite s) {
@@ -297,6 +326,8 @@ public class CraftingUI : MonoBehaviour
         GameObject tm = Camera.main.GetComponent<CameraController>().getTileMap();
         Assert.IsNotNull(tm);
         //go.transform.SetParent( tm.transform, worldPositionStays: false); 
+
+        //block is placed, consume component(s)
     }
     private void LoadAllCraftables() {
         AllCraftables.Clear();
@@ -320,5 +351,13 @@ public class CraftingUI : MonoBehaviour
 
         Debug.Log($"Loaded {AllCraftables.Count} craftable prefabs");
     }
+
+    private IEnumerator UpdatePlaceButtonNextFrame() {
+        yield return null;  // Wait one frame for Destroy() to complete
+
+        InventoryAP iap = Camera.main.GetComponent<CameraController>().getInventoryAp();
+        bool placeButtonOn = iap.areRequirementsSatisfied();
+        placeButton.GetComponent<Button>().interactable = placeButtonOn;
+    }//F
 
 }//class

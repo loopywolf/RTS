@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class InventoryAP : MonoBehaviour
 {
-    List<ItemAP> inventorySlot;
+    List<ItemAP> inventorySlot;    //deprecated
     private const int INVENTORY_SIZE = 12;
     public GameObject inventorySlotPrefab; //deprecated but still functional
     public GameObject inventorySlotsParent; //deprecated but still functional
@@ -163,7 +163,10 @@ public class InventoryAP : MonoBehaviour
             // Do something with the child
             Image i = child.GetComponent<Image>();
             Assert.IsNotNull(i);    //should never be null
-            Sprite hcs = healthCollectible.GetComponent<SpriteRenderer>().sprite;
+            //Sprite hcs = healthCollectible.GetComponent<SpriteRenderer>().sprite; //this is your problem - There is no spriterenderer attached to MaterialSlot(clone)
+            Sprite hcs = healthCollectible.GetComponent<Image>().sprite;
+
+            //get the MaterialSlot.UI.Image;
             Assert.IsNotNull(hcs); //should never be null
             if (i.sprite == hcs)
                 return child.GetComponent<MaterialSlot>();
@@ -196,8 +199,10 @@ public class InventoryAP : MonoBehaviour
 
         Debug.Log("added required=" + hc.name);
 
-        //TODO now check if we have those requirements to see if the button should be disabled
-        bool placeButtonEnabled = areRequirementsSatisfied();
+        //now check if we have those requirements to see if the button should be disabled
+        //bool placeButtonEnabled = areRequirementsSatisfied(); //can I bring this out of this function?
+
+        //TODO enable or disable button
     }//F
 
     private void clearRequired() {
@@ -207,19 +212,37 @@ public class InventoryAP : MonoBehaviour
         }
     }//F
 
-    private bool areRequirementsSatisfied() {
+    public bool areRequirementsSatisfied() {
         for (int i = uiRequiredPanel.transform.childCount - 1; i >= 0; i--) {
-            //if (!hasEnoughOfMaterial(uiRequiredPanel.transform.GetChild(i).gameObject)) return false;
+            if (!hasEnoughOfMaterial(uiRequiredPanel.transform.GetChild(i).gameObject)) return false;
             MaterialSlot ms = getMaterialSlot(uiRequiredPanel.transform.GetChild(i).gameObject);
             if (ms == null) return false;
         }//for
 
-        return true;
+        return true; //this is working (pretty sure)
     }//F
 
     private bool hasEnoughOfMaterial(GameObject gameObject) {
         //throw new NotImplementedException();
-
+        Debug.Log("Do I have enough:" + gameObject.name);
         return true;
-    }
+    }//F
+
+    internal bool enablePlaceButton(GameObject foundMaterial) {
+        //throw new NotImplementedException();
+        //Assert.IsNotNull(this.inventorySlot);
+        //if (this.inventorySlot.Count == 0) return false;    //we have NO materials
+        Assert.IsNotNull(uiMaterialsPanel);
+        for (int i = 0; i < uiMaterialsPanel.transform.childCount; i++) {
+            Transform t = uiMaterialsPanel.transform.GetChild(i);
+            MaterialSlot ms = t.GetComponent<MaterialSlot>();
+            Debug.Log("Material Slot " + ms);
+            Assert.IsNotNull(ms);
+        }
+
+        //attempt 2 - we try by name 9.9
+
+        //by default return true.. but the first fail condition returns FALSE
+        return false;
+    }//F
 }//class
